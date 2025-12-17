@@ -360,7 +360,10 @@ export function useDBSP<
       dataMapRef.current.set(rowKey, row);
     }
     
-    const delta = ZSet.fromEntries(entries, getKey);
+    // IMPORTANT: Use JSON.stringify as the key for ZSet delta (not the primary key).
+    // This ensures that old_row with weight -1 and new_row with weight +1
+    // are treated as different entries when their content differs.
+    const delta = ZSet.fromEntries(entries);
     processDelta(delta);
   }, [getKey, inferSchema, initCircuit, processDelta]);
   
@@ -372,7 +375,7 @@ export function useDBSP<
     if (!existing || !circuitRef.current) return;
     
     dataMapRef.current.delete(keyStr);
-    const delta = ZSet.fromEntries([[existing, -1]], getKey);
+    const delta = ZSet.fromEntries([[existing, -1]]);
     processDelta(delta);
   }, [getKey, processDelta]);
   
@@ -390,7 +393,7 @@ export function useDBSP<
     }
     
     if (entries.length > 0) {
-      const delta = ZSet.fromEntries(entries, getKey);
+      const delta = ZSet.fromEntries(entries);
       processDelta(delta);
     }
   }, [getKey, processDelta]);
@@ -408,7 +411,7 @@ export function useDBSP<
     dataMapRef.current.clear();
     
     if (entries.length > 0) {
-      const delta = ZSet.fromEntries(entries, getKey);
+      const delta = ZSet.fromEntries(entries);
       processDelta(delta);
     }
     

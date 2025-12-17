@@ -21,3 +21,29 @@ export * from './sql/sql-compiler';
 export * from './columnar';
 export * from './useDBSP';
 export * from './async-stream';
+export * from './react/useJoinDBSP';
+
+// Re-export optimized join operators from zset
+export { 
+  IndexedZSet, 
+  joinFilter, 
+  joinFilterMap, 
+  joinWithIndex, 
+  antiJoin, 
+  semiJoin 
+} from './zset';
+
+// Re-export high-performance join implementations
+export { 
+  OptimizedJoinState, 
+  AppendOnlyJoinState,
+  benchmarkJoin,
+} from './optimized-join';
+
+// Re-export advanced join types
+export {
+  AsofJoinState,
+  StatePrunedJoinState,
+  IncrementalSemiJoinState,
+  IncrementalAntiJoinState,
+} from './advanced-joins';

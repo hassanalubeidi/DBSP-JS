@@ -246,8 +246,8 @@ export function hashJoin<T, U, K>(
   leftKey: (t: T) => K,
   rightKey: (u: U) => K,
   keyToString: (k: K) => string = JSON.stringify
-): { result: ZSet<[T, U]>; stats: JoinStats } {
-  const stats: JoinStats = {
+): { result: ZSet<[T, U]>; stats: BenchmarkJoinStats } {
+  const stats: BenchmarkJoinStats = {
     leftSize: left.size(),
     rightSize: right.size(),
     hashTableSize: 0,
@@ -304,7 +304,7 @@ export function hashJoin<T, U, K>(
   return { result, stats };
 }
 
-export interface JoinStats {
+export interface BenchmarkJoinStats {
   leftSize: number;
   rightSize: number;
   hashTableSize: number;

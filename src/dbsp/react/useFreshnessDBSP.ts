@@ -397,7 +397,12 @@ export function useFreshnessDBSP<
     }
     
     if (entries.length > 0) {
-      const delta = ZSet.fromEntries(entries, getKey);
+      // IMPORTANT: Use JSON.stringify as the key for ZSet delta (not the primary key).
+      // This ensures that old_row with weight -1 and new_row with weight +1
+      // are treated as different entries when their content differs.
+      // The primary key (getKey) is used by dataMapRef to track current state,
+      // but the ZSet delta must distinguish by full row content for correct DBSP semantics.
+      const delta = ZSet.fromEntries(entries);
       processDelta(delta);
       setDataVersion(v => v + 1);
     }
@@ -446,7 +451,8 @@ export function useFreshnessDBSP<
     droppedStaleRef.current = 0;
     
     if (entries.length > 0) {
-      const delta = ZSet.fromEntries(entries, getKey);
+      // Use JSON.stringify for ZSet delta (same reasoning as processQueue)
+      const delta = ZSet.fromEntries(entries);
       processDelta(delta);
     }
     

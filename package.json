@@ -10,11 +10,12 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "server": "node server.js",
-    "basket:server": "node src/basket-tool/server/basket-server.js",
-    "basket:dev": "vite --config vite.basket.config.ts"
+    "server": "node server.js"
   },
   "dependencies": {
+    "@types/dagre": "^0.7.53",
+    "@xyflow/react": "^12.10.0",
+    "dagre": "^0.8.5",
     "echarts": "^6.0.0",
     "echarts-for-react": "^3.0.5",
     "node-sql-parser": "^5.3.13",
